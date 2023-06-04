@@ -1,0 +1,11 @@
+.container {
+  padding-top: 20px;
+  text-align: center;
+  display: block;
+}
+
+
+.searchbar {
+  width: 600px;
+  border-radius: 28px !important;
+}

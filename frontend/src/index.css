@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-width: 900px; /* just for simplicity for me */
+  background-color: #D9D9D9;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+main {
+  margin: 62px auto 0px auto; /* margin from the top due to existing of the header */
+  background-color: white;
+}
+@media (max-width: 900px) {
+  main {
+    width: 100%;
+  }
+}
+@media (min-width: 900px) {
+  main {
+    max-width: 1400px;
+  }
+}

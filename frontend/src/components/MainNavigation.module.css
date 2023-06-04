@@ -1,0 +1,64 @@
+.header { 
+  min-width: 900px; /* Nhuan Do supposed it */
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #E85555;
+  padding: 4px 16px 8px 40px;
+}
+
+.header > a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 32px;
+  vertical-align: middle;
+}
+
+.header > a:hover {
+  cursor: pointer;
+}
+
+.header > a img {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+
+.header > a span {
+  margin-left: 12px;
+  vertical-align: middle;
+}
+
+.header nav {
+  width: calc(100% - 400px);
+  text-align: right;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.header nav ul {
+  list-style-type: none;
+}
+
+.header nav ul li {
+  display: inline-block;
+  margin: 0px 16px;
+  color: white;
+}
+
+.header nav ul li,
+.header nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
+
+.header nav ul li a:hover,
+.header nav ul li a:active {
+  color: rgb(82, 82, 82);
+  border-bottom: 2px solid rgb(82, 82, 82);
+  cursor: pointer;
+}
