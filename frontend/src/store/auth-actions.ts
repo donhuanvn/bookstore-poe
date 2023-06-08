@@ -23,6 +23,6 @@ export const signup = (email: string, password: string) => {
     // handle response
     // dispatch(authActions.finishProgress({ error: null, user: email }))
     dispatch(authActions.finishProgress({ error: null, user: email }))
-    dispatch(uiActions.hideAll())
+    dispatch(uiActions.hideAll()) /* if no error */
   }
 }

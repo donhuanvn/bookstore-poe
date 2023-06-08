@@ -1,5 +1,6 @@
 .container {
   background-color: #d9d9d9;
+  border: 1px solid #d9d9d9;
   border-radius: 20px;
   height: 400px;
   padding: 18px;
@@ -7,6 +8,17 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.container:hover {
+  border-color: black;
+  transform: scale(1.01);
+  transition: 0.2s;
+}
+
+.container:active {
+  border-color: black;
+  transform: scale(0.98);
 }
 
 .container h1 {

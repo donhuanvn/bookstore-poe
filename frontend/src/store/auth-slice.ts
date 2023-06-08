@@ -7,12 +7,18 @@ type AuthState = {
   error: any;
 }
 
+export type AuthError = {
+  message?: string;
+  email?: string;
+  password?: string;
+} | null
+
 /* 
 Error-free means to success, and
 User undefired means to failure.
 */
 type AuthResponse = {
-  error: any;
+  error: AuthError;
   user: undefined | string;
 }
 

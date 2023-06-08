@@ -1,12 +1,11 @@
 .container {
   padding: 20px;
+  min-height: 400px;
 }
 
-.pagination-container {
+.no-book-indicator {
+  padding: 150px;
   text-align: center;
-  padding: 0px 20px 20px 20px;
-}
-
-.pagination {
-  display: inline-block;
+  font-size: 20px;
+  font-style: italic;
 }

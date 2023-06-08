@@ -9,3 +9,12 @@
   width: 600px;
   border-radius: 28px !important;
 }
+
+.btn-clear:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.btn-clear svg:active {
+  transform: scale(0.9);
+}

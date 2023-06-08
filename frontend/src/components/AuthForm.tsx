@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../store/ui-slice';
+import type { AuthError } from '../store/auth-slice';
 import { login, signup } from '../store/auth-actions';
 
 import React, { useRef, useState } from 'react';
@@ -19,7 +20,7 @@ type AuthFormProps = {
 const AuthForm: React.FC<AuthFormProps> = (props) => {
   const dispatch: AppDispatch = useDispatch()
   const isProcessing = useSelector<RootState, boolean>(({ auth }) => auth.isInProgress)
-  const error = useSelector<RootState, any>(({ auth }) => auth.error)
+  const error = useSelector<RootState, AuthError>(({ auth }) => auth.error)
 
   const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false)
 
@@ -74,7 +75,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
         type="email"
         label="E-mail"
         inputRef={signupEmailRef}
-        error={error && error.email}
+        error={!!error && !!error.email}
         helperText={error && error.email ? error.email : ''}
       />
       <TextField
@@ -84,7 +85,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
         label="Password"
         type="password"
         inputRef={signupPasswordRef}
-        error={error && error.password}
+        error={!!error && !!error.password}
         helperText={error && error.password ? error.password : ''}
       />
       <TextField
@@ -113,7 +114,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
         type="email"
         label="E-mail"
         inputRef={loginEmailRef}
-        error={error && error.email}
+        error={!!error && !!error.email}
         helperText={error && error.email ? error.email : ''}
       />
       <TextField
@@ -124,7 +125,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
         type="password"
         autoComplete="current-password"
         inputRef={loginPasswordRef}
-        error={error && error.password}
+        error={!!error && !!error.password}
         helperText={error && error.password ? error.password : ''}
       />
       <div className={classes['button-group']}>
