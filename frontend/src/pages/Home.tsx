@@ -1,9 +1,9 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { fetchBooksWithRange } from "../store/book-actions"
+import { fetchAllBooks } from "../store/book-actions"
 import { bookActions } from "../store/book-slice"
 import type { AppDispatch, RootState } from "../store"
-import type { Book } from "../util/types"
+import type { Book } from "../types"
 
 import { useNavigate } from "react-router-dom"
 
@@ -17,28 +17,27 @@ const NUMBER_BOOK_TO_SHOW = 12
 
 function HomePage() {
   const navigate = useNavigate()
-
   const dispatch: AppDispatch = useDispatch()
-  const isLoadingBooks: boolean = useSelector<RootState, boolean>(({ book }) => book.isLoading)
-  const currentStartIndex: number = useSelector<RootState, number>(({ book }) => book.startIndex)
-  const books: Book[] = useSelector<RootState, Book[]>(({ book }) => book.loadedBooks)
-  const total: number = useSelector<RootState, number>(({ book }) => book.totalAvailableCount)
-  const searchText: string = useSelector<RootState, string>(({ book }) => book.searchText)
 
-  const currentPage = Math.floor(currentStartIndex / NUMBER_BOOK_TO_SHOW) + 1
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const shownBooks = useSelector<RootState, Book[]>(({ book }) => {
+    const start = (currentPage - 1) * NUMBER_BOOK_TO_SHOW
+    const end = start + NUMBER_BOOK_TO_SHOW
+    return book.loadedBooks.slice(start, end)
+  })
+  const bookCount = useSelector<RootState, number>(({ book }) => book.totalAvailableCount) /* Total books avaliable in the DB */
+  const searchText = useSelector<RootState, string>(({ book }) => book.searchText)
+  const isLoading = useSelector<RootState, boolean>(({ book }) => book.isLoading)
 
   useEffect(() => {
-    if (books.length === 0) {
-      dispatch(fetchBooksWithRange(0, NUMBER_BOOK_TO_SHOW))
+    if (bookCount === 0) {
+      dispatch(fetchAllBooks())
     }
   }, [])
 
   const paginationHandler = (_event: React.ChangeEvent<unknown>, pageIndex: number) => {
     if (pageIndex !== currentPage) {
-      const start = (pageIndex - 1) * NUMBER_BOOK_TO_SHOW
-      const count = NUMBER_BOOK_TO_SHOW
-      console.log(`Fetch books from ${start} with ${count} books`)
-      dispatch(fetchBooksWithRange(start, count))
+      setCurrentPage(pageIndex)
     }
   }
 
@@ -55,15 +54,15 @@ function HomePage() {
   return (
     <>
       <SearchBar onSearchChange={searchHandler} searchText={searchText} />
-      <BooksList books={books} onSelectBook={selectBookForDetailHandler}/>
+      <BooksList books={shownBooks} onSelectBook={selectBookForDetailHandler} />
       <div className={classes['pagination-container']} >
         <Pagination
           className={classes['pagination']}
-          count={Math.ceil(total / NUMBER_BOOK_TO_SHOW)}
+          count={Math.ceil(bookCount / NUMBER_BOOK_TO_SHOW)}
           color="secondary"
           page={currentPage}
           onChange={paginationHandler}
-          disabled={isLoadingBooks}
+          disabled={isLoading}
         />
       </div>
     </>
@@ -71,7 +70,7 @@ function HomePage() {
 }
 
 export async function loader() {
-  // console.log("Home Loader run!")
+  console.log("Home Loader run!")
 
   return []
 }

@@ -1,19 +1,17 @@
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
-import type { Book } from '../util/types';
+import type { Book } from '../types';
 
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Grid from '@mui/material/Grid';
+import { useLoaderData, json, defer, Await, Navigate, useNavigate } from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
 
-import classes from './BookDetail.module.css'
+import BookDetail from '../components/BookDetail';
+import supabase from '../supabase';
 
 
-
-function BookDetailPage() {
+export function BookDetailPage() {
   const navigate = useNavigate()
-
-  const book: Book | null = useSelector<RootState, Book | null>(({ book }) => book.chosenBookForDetail)
+  const book = useSelector<RootState, Book | null>(({ book }) => book.chosenBookForDetail)
 
   useEffect(() => {
     if (!!!book) {
@@ -22,38 +20,66 @@ function BookDetailPage() {
   }, [])
 
   /* React Router need a little time to navigate. This line to prevent from unexpected errors. */
-  if (!!!book) { return <div></div> }
+  if (!!!book) { return <></> }
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 46px)' }}> {/* This magic number is measured through Inspect Tool */}
-      <Grid className={classes.container} container rowSpacing={2}>
-        <Grid className={classes['book-title']} item xs={12}>
-          {book!.title}
-        </Grid>
-        <Grid className={classes['book-image']} item xs={12}>
-          <img src={book!.image} alt='Book Image' />
-        </Grid>
-        <Grid className={classes.label} item xs={4}>
-          Price:
-        </Grid>
-        <Grid className={classes['book-price']} item xs={8}>
-          ${book!.price}
-        </Grid>
-        <Grid className={classes.label} item xs={4}>
-          Authors:
-        </Grid>
-        <Grid className={classes['book-authors']} item xs={8}>
-          {book!.authors.join(', ')}
-        </Grid>
-        <Grid className={classes.label} item xs={4}>
-          Description:
-        </Grid>
-        <Grid className={classes['book-description']} item xs={8}>
-          {book!.description}
-        </Grid>
-      </Grid>
-    </div>
+    <BookDetail
+      id={book.id}
+      title={book.title}
+      creator={book.creator}
+      price={book.price}
+      image={book.image}
+      authors={book.authors}
+      description={book.description}
+    />
   )
 }
 
-export default BookDetailPage
+export function BookDetailPageWithLoader() {
+  const { book } = useLoaderData() as { book: any }
+
+  const fallback = <p style={{ textAlign: 'center' }}>Loading...</p>
+  return (
+    <>
+      <Suspense fallback={fallback}>
+        <Await resolve={book} errorElement={<Navigate to='/' replace={true} />}>
+          {(loadedBook) =>
+            <BookDetail
+              id={loadedBook.id}
+              title={loadedBook.title}
+              creator={loadedBook.creator}
+              price={loadedBook.price}
+              image={loadedBook.image}
+              authors={loadedBook.authors}
+              description={loadedBook.description}
+            />
+          }
+        </Await>
+      </Suspense>
+    </>
+  )
+}
+
+const loadBookDetail = async (id: string) => {
+  const { data, error } = await supabase
+    .from('Books')
+    .select("*")
+    .eq('id', id)
+
+  if (error) {
+    throw json({ message: 'Could not fetch book detail.' }, { status: 500 })
+  }
+
+  if (data.length === 0) {
+    throw json({ message: 'Not found any book with such ID.' }, { status: 404 })
+  }
+
+  return data[0]
+}
+
+export const loader = async ({ request, params }: any) => {
+  const id = params.bookId
+  return defer({
+    book: loadBookDetail(id)
+  })
+}

@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import type { Book } from './types'
+import type { Book } from '../types'
 
 let totalBooksCount: number = faker.number.int({ min: 20, max: 40 })
 
@@ -25,9 +25,8 @@ export const fetchBookCount = async () => {
   return totalBooksCount
 }
 
-export const fetchBooks = async (start: number, count: number) => {
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  return generatedBooks.slice(start, start + count)
+export const fetchBooks = async () => {
+  return generatedBooks
 }
 
 export const fetchBook = async (id: string) => {

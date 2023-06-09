@@ -4,7 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import RootLayout from './pages/Root';
 import ErrorPage from './pages/Error';
 import HomePage, { loader as homeLoader } from './pages/Home';
-import BookDetailPage from './pages/BookDetail';
+import {BookDetailPage, BookDetailPageWithLoader, loader as detailLoader} from './pages/BookDetail';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +26,8 @@ const router = createBrowserRouter([
           },
           {
             path: ':bookId',
-            element: <BookDetailPage />
+            element: <BookDetailPageWithLoader />,
+            loader: detailLoader
           }
         ]
 

@@ -1,15 +1,21 @@
 import { authActions } from "./auth-slice";
 import { uiActions } from "./ui-slice";
 import { AppDispatch } from ".";
+import supabase from "../supabase";
+
+supabase.getChannels()
 
 export const login = (email: string, password: string) => {
   return async (dispatch: AppDispatch) => {
     dispatch(authActions.enterProgress())
-    // send request to server,
-    // wait for response
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    // handle response
-    dispatch(authActions.finishProgress({ error: null, user: email }))
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+    if (error) {
+      return dispatch(authActions.finishProgress({ error: { message: "Unable to login with these information" }, user: undefined /* not logged in */ }))
+    }
+
+    dispatch(authActions.finishProgress({ error: null, user: data.user!.email }))
     dispatch(uiActions.hideAll())
   }
 }
@@ -17,12 +23,24 @@ export const login = (email: string, password: string) => {
 export const signup = (email: string, password: string) => {
   return async (dispatch: AppDispatch) => {
     dispatch(authActions.enterProgress())
-    // send request to server,
-    // wait for response
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    // handle response
-    // dispatch(authActions.finishProgress({ error: null, user: email }))
-    dispatch(authActions.finishProgress({ error: null, user: email }))
+
+    const { data, error } = await supabase.auth.signUp({ email, password })
+
+    if (error) {
+      return dispatch(authActions.finishProgress({ error: { message: error.message }, user: undefined /* not logged in */ }))
+    }
+
+    dispatch(authActions.finishProgress({ error: null, user: data.user!.email }))
     dispatch(uiActions.hideAll()) /* if no error */
+  }
+}
+
+export const logout = () => {
+  return async (dispatch: AppDispatch) => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      return /* Visualize error on the screen */
+    }
+    dispatch(authActions.reset())
   }
 }

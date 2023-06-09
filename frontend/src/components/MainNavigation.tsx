@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
+import type { AppDispatch } from '../store'
 import { uiActions } from '../store/ui-slice'
-import { authActions } from '../store/auth-slice'
+import { logout } from '../store/auth-actions'
 
 import { Link } from 'react-router-dom'
 import classes from './MainNavigation.module.css'
 import { RootState } from '../store'
 
 function MainNavigation() {
-  const dispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
   const loggedInUser = useSelector<RootState, undefined | string>(({ auth }) => auth.user)
 
   const addNewBookHandler = () => {
@@ -23,7 +24,7 @@ function MainNavigation() {
   }
 
   const logoutHandler = () => {
-    dispatch(authActions.logout())
+    dispatch(logout())
   }
 
   let authListItem = (
@@ -42,14 +43,12 @@ function MainNavigation() {
   return (
     <header className={classes.header}>
       <Link to='/'>
-        <img src='logo512.png' alt='Bookstore logo!' />
+        <img src='/logo512.png' alt='Bookstore logo!' />
         <span>Online Book Store</span>
       </Link>
       <nav>
         <ul>
-          <li>
-            <Link to="#" onClick={addNewBookHandler}>Add New Book</Link>
-          </li>
+          {!!loggedInUser && <li><Link to="#" onClick={addNewBookHandler}>Add New Book</Link></li>}
           {authListItem}
         </ul>
       </nav>

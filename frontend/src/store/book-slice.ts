@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { Book } from "../util/types";
+import type { Book } from "../types";
 
 type BookState = {
   isSubmitting: boolean;
   isLoading: boolean;
   totalAvailableCount: number;
-  startIndex: number;
   loadedBooks: Book[];
   searchText: string;
   chosenBookForDetail: Book | null;
@@ -16,7 +15,6 @@ const initialBookSlice: BookState = {
   isSubmitting: false,
   isLoading: false,
   totalAvailableCount: 0, /* Total books in database */
-  startIndex: 0,
   loadedBooks: [], /* To store books loaded to display at homepage */
   searchText: '',
   chosenBookForDetail: null
@@ -38,8 +36,7 @@ const bookSlice = createSlice({
     finishLoadingStage(state) {
       state.isLoading = false
     },
-    replaceLoadedBooks(state, action: PayloadAction<{ startIndex: number, books: Book[] }>) {
-      state.startIndex = action.payload.startIndex
+    replaceLoadedBooks(state, action: PayloadAction<{ books: Book[] }>) {
       state.loadedBooks = action.payload.books
     },
     updateTotalCount(state, action: PayloadAction<number>) {

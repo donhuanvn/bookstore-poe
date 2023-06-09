@@ -40,7 +40,7 @@ const authSlice = createSlice({
       state.error = action.payload.error
       state.user = action.payload.user
     },
-    logout() {
+    reset() {
       return initialAuthState
     }
   }

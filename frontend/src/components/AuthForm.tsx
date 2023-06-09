@@ -45,7 +45,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
     const enteredEmail = loginEmailRef.current!.value
     const enteredPassword = loginPasswordRef.current!.value
 
-    console.log("Login info:", enteredEmail, enteredPassword)
+    // console.log("Login info:", enteredEmail, enteredPassword)
     dispatch(login(enteredEmail, enteredPassword))
   }
 
@@ -56,7 +56,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
     const enteredPassword = signupPasswordRef.current!.value
     const enteredReenterPass = signupReenterPasswordRef.current!.value
 
-    console.log("Sign Up info:", enteredEmail, enteredPassword, enteredReenterPass)
+    // console.log("Sign Up info:", enteredEmail, enteredPassword, enteredReenterPass)
 
     if (enteredReenterPass !== enteredPassword) {
       setErrorConfirmPassword(true)
