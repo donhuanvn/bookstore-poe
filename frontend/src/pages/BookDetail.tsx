@@ -14,6 +14,8 @@ export function BookDetailPage() {
   const book = useSelector<RootState, Book | null>(({ book }) => book.chosenBookForDetail)
 
   useEffect(() => {
+    document.title = `Book Detail | ${book!.title}`
+
     if (!!!book) {
       navigate('/')
     }
@@ -37,6 +39,13 @@ export function BookDetailPage() {
 
 export function BookDetailPageWithLoader() {
   const { book } = useLoaderData() as { book: any }
+
+  useEffect(()=>{
+    const setDocTitle = async () => {
+      document.title = `Book Detail | ${(await book).title}`
+    }
+    setDocTitle()
+  }, [])
 
   const fallback = <p style={{ textAlign: 'center' }}>Loading...</p>
   return (

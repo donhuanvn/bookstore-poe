@@ -30,6 +30,7 @@ function HomePage() {
   const isLoading = useSelector<RootState, boolean>(({ book }) => book.isLoading)
 
   useEffect(() => {
+    document.title = "Bookstore PoE (Nhuan Do)"
     if (bookCount === 0) {
       dispatch(fetchAllBooks())
     }
