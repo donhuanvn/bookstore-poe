@@ -8,7 +8,7 @@ type BookState = {
   totalAvailableCount: number;
   loadedBooks: Book[];
   searchText: string;
-  chosenBookForDetail: Book | null;
+  bookForShowDetail: Book | null;
 }
 
 const initialBookSlice: BookState = {
@@ -17,7 +17,7 @@ const initialBookSlice: BookState = {
   totalAvailableCount: 0, /* Total books in database */
   loadedBooks: [], /* To store books loaded to display at homepage */
   searchText: '',
-  chosenBookForDetail: null
+  bookForShowDetail: null
 }
 
 const bookSlice = createSlice({
@@ -37,7 +37,7 @@ const bookSlice = createSlice({
       state.isLoading = false
     },
     replaceLoadedBooks(state, action: PayloadAction<{ books: Book[] }>) {
-      state.loadedBooks = action.payload.books
+      state.loadedBooks = [...action.payload.books]
     },
     updateTotalCount(state, action: PayloadAction<number>) {
       state.totalAvailableCount = action.payload
@@ -45,11 +45,8 @@ const bookSlice = createSlice({
     setSearchText(state, action: PayloadAction<string>) {
       state.searchText = action.payload
     },
-    chooseBookForShowingDetail(state, action: PayloadAction<string>) {
-      const chosenBook = state.loadedBooks.find(b => b.id === action.payload)
-      if (chosenBook) {
-        state.chosenBookForDetail = {...chosenBook}
-      }
+    setBookToShowDetail(state, action: PayloadAction<Book>) {
+      state.bookForShowDetail = {...action.payload}
     }
   }
 })

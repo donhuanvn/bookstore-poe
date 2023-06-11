@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type UiState = {
   isNewBookFormVisible: boolean;
+  isEditBookFormVisible: boolean;
   isLoginFormVisible: boolean;
   isSignUpFormVisible: boolean;
 }
 
 const initialUiState: UiState = {
   isNewBookFormVisible: false,
+  isEditBookFormVisible: false,
   isLoginFormVisible: false,
   isSignUpFormVisible: false
 }
@@ -17,19 +19,16 @@ const uiSlice = createSlice({
   initialState: initialUiState as UiState,
   reducers: {
     showNewBookForm(state) {
-      state.isNewBookFormVisible = true
-      state.isLoginFormVisible = false
-      state.isSignUpFormVisible = false
+      return {...initialUiState, isNewBookFormVisible: true}
+    },
+    showEditBookForm(state) {
+      return {...initialUiState, isEditBookFormVisible: true}
     },
     showLoginForm(state) {
-      state.isNewBookFormVisible = false
-      state.isLoginFormVisible = true
-      state.isSignUpFormVisible = false
+      return {...initialUiState, isLoginFormVisible: true}
     },
     showSignUpForm(state) {
-      state.isNewBookFormVisible = false
-      state.isLoginFormVisible = false
-      state.isSignUpFormVisible = true
+      return {...initialUiState, isSignUpFormVisible: true}
     },
     hideAll(state) {
       return initialUiState

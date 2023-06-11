@@ -1,5 +1,8 @@
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store';
+import { useSelector, useDispatch } from 'react-redux';
+import { bookActions } from '../store/book-slice';
+import { uiActions } from '../store/ui-slice';
+import { deleteBook } from '../store/book-actions';
+import type { RootState, AppDispatch } from '../store';
 import type { Book } from '../types';
 
 import { useLoaderData, json, defer, Await, Navigate, useNavigate } from 'react-router-dom';
@@ -11,10 +14,21 @@ import supabase from '../supabase';
 
 export function BookDetailPage() {
   const navigate = useNavigate()
-  const book = useSelector<RootState, Book | null>(({ book }) => book.chosenBookForDetail)
+  const dispatch: AppDispatch = useDispatch()
+  const loggedInUserEmail = useSelector<RootState, undefined | string>(({ auth }) => auth.user)
+  const book = useSelector<RootState, Book | null>(({ book }) => book.bookForShowDetail)
+
+  const onManipulateBook = (type: "edit" | "delete") => {
+    if (type === "edit") {
+      dispatch(uiActions.showEditBookForm())
+    } else {
+      dispatch(deleteBook(book!.id))
+      navigate('/')
+    }
+  }
 
   useEffect(() => {
-    document.title = `Book Detail | ${book!.title}`
+    document.title = `Book Detail | ${book && book.title}`
 
     if (!!!book) {
       navigate('/')
@@ -26,6 +40,8 @@ export function BookDetailPage() {
 
   return (
     <BookDetail
+      allowManipulate={loggedInUserEmail === book.creator}
+      onManipulate={onManipulateBook}
       id={book.id}
       title={book.title}
       creator={book.creator}
@@ -38,13 +54,27 @@ export function BookDetailPage() {
 }
 
 export function BookDetailPageWithLoader() {
+  const navigate = useNavigate()
+  const dispatch: AppDispatch = useDispatch()
+  const loggedInUserEmail = useSelector<RootState, undefined | string>(({ auth }) => auth.user)
   const { book } = useLoaderData() as { book: any }
 
-  useEffect(()=>{
-    const setDocTitle = async () => {
-      document.title = `Book Detail | ${(await book).title}`
+  const onManipulateBook = (type: "edit" | "delete") => {
+    if (type === "edit") {
+      dispatch(uiActions.showEditBookForm())
+    } else {
+      dispatch(deleteBook(book!.id))
+      navigate('/')
     }
-    setDocTitle()
+  }
+
+  useEffect(() => {
+    const handleLoadedBook = async () => {
+      const bookData = await book;
+      document.title = `Book Detail | ${bookData.title}`
+      dispatch(bookActions.setBookToShowDetail(bookData))
+    }
+    handleLoadedBook()
   }, [])
 
   const fallback = <p style={{ textAlign: 'center' }}>Loading...</p>
@@ -54,6 +84,8 @@ export function BookDetailPageWithLoader() {
         <Await resolve={book} errorElement={<Navigate to='/' replace={true} />}>
           {(loadedBook) =>
             <BookDetail
+              allowManipulate={loggedInUserEmail === loadedBook.creator}
+              onManipulate={onManipulateBook}
               id={loadedBook.id}
               title={loadedBook.title}
               creator={loadedBook.creator}

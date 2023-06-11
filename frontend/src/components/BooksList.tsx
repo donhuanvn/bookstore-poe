@@ -26,6 +26,10 @@ type BooksListProps = {
 }
 
 const BooksList: React.FC<BooksListProps> = (props) => {
+  const onChooseBookHandler = (id: string) => {
+    props.onSelectBook(id)
+  }
+
   return (
     <Grid className={classes.container} container spacing={2}>
       {props.books.length === 0 && <Grid item xs={12}>
@@ -33,7 +37,7 @@ const BooksList: React.FC<BooksListProps> = (props) => {
       </Grid>}
       {props.books.map((book) => (
         <Grid item xs={4} sm={4} lg={3} key={book.id}> {/* 3 columns for small screen, 4 colums for big screen */}
-          <BookItem {...book} onSelect={props.onSelectBook} />
+          <BookItem {...book} onChoose={onChooseBookHandler} />
         </Grid>
       ))}
     </Grid>

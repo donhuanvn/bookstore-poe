@@ -6,7 +6,7 @@ import type { RootState } from ".";
 import supabase from "../supabase";
 
 export const fetchAllBooks = () => {
-  return async (dispatch: AppDispatch) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(bookActions.enterLoadingStage())
     // await new Promise(resolve => setTimeout(resolve, 2000));
     const { data, error } = await supabase
@@ -20,6 +20,13 @@ export const fetchAllBooks = () => {
     dispatch(bookActions.replaceLoadedBooks({ books: data as Book[] }))
     dispatch(bookActions.updateTotalCount(data!.length))
     dispatch(bookActions.finishLoadingStage())
+
+    /* Update out-dated dependency data in the state. */
+    const oldDetailedBook = getState().book.bookForShowDetail
+    if (oldDetailedBook !== null) {
+      const newlyLoadedBook = (data as Book[]).find(b => b.id === oldDetailedBook.id)
+      newlyLoadedBook && dispatch(bookActions.setBookToShowDetail(newlyLoadedBook))
+    }
   }
 }
 
@@ -43,7 +50,7 @@ export const submitNewBook = (newBook: Book) => {
       .from('books')
       .insert([
         {
-          creator: await supabase.auth.getUser(),
+          creator,
           title: newBook.title,
           price: newBook.price,
           image: newBook.image,
@@ -54,11 +61,55 @@ export const submitNewBook = (newBook: Book) => {
 
     if (error) {
       /* Should show this error on the screen.  */
+      console.log(error)
       return dispatch(bookActions.finishSubmittingState())
     }
 
     dispatch(bookActions.finishSubmittingState())
     dispatch(uiActions.hideAll()) /* no error */
+    dispatch(fetchAllBooks()) /* expecting to update all books on the homepage */
+  }
+}
+
+export const submitUpdatedBook = (updatedBook: Book) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(bookActions.enterSubmittingStage())
+
+    const { error } = await supabase
+      .from('books')
+      .update({
+        title: updatedBook.title,
+        price: updatedBook.price,
+        image: updatedBook.image,
+        authors: updatedBook.authors,
+        description: updatedBook.description
+      })
+      .eq('id', updatedBook.id)
+
+    if (error) {
+      /* Should show this error on the screen.  */
+      console.log(error)
+      return dispatch(bookActions.finishSubmittingState())
+    }
+
+    dispatch(bookActions.finishSubmittingState())
+    dispatch(uiActions.hideAll()) /* no error */
+    dispatch(fetchAllBooks()) /* expecting to update all books on the homepage */
+  }
+}
+
+export const deleteBook = (bookId: string) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { error } = await supabase
+      .from('books')
+      .delete()
+      .eq('id', bookId)
+
+    if (error) {
+      /* Should show this error on the screen.  */
+      console.log(error)
+    }
+
     dispatch(fetchAllBooks()) /* expecting to update all books on the homepage */
   }
 }

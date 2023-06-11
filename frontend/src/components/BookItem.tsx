@@ -7,12 +7,12 @@ type BookItemProps = {
   title: string;
   price: number;
   image: string;
-  onSelect: (id: string) => void;
+  onChoose: (id: string) => void;
 }
 
 const BookItem: React.FC<BookItemProps> = (props) => {
   const chooseBookHandler = () => {
-    props.onSelect(props.id)
+    props.onChoose(props.id)
   }
   return (
     <div className={classes.container} onClick={chooseBookHandler}>

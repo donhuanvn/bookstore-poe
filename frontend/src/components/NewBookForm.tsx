@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState, AppDispatch } from '../store';
-import { submitNewBook } from '../store/book-actions';
+import type { Book } from '../types';
+import { submitNewBook, submitUpdatedBook } from '../store/book-actions';
 import React, { useEffect, useRef, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment'
@@ -12,7 +13,11 @@ import validator from 'validator';
 
 import classes from './NewBookForm.module.css'
 
-const NewBookForm = () => {
+type NewBookFormProps = {
+  editingBook?: Book;
+}
+
+const NewBookForm: React.FC<NewBookFormProps> = (props) => {
   const titleInputRef = useRef<HTMLInputElement>(null)
   const priceInputRef = useRef<HTMLInputElement>(null)
   const imageInputRef = useRef<HTMLInputElement>(null)
@@ -27,7 +32,17 @@ const NewBookForm = () => {
   const [descriptionError, setDescriptionError] = useState<string>('')
 
   const dispatch: AppDispatch = useDispatch()
-  const isSubmitting = useSelector<RootState, boolean>(({book}) => book.isSubmitting)
+  const isSubmitting = useSelector<RootState, boolean>(({ book }) => book.isSubmitting)
+
+  useEffect(() => {
+    if (!!props.editingBook) {
+      titleInputRef.current!.value = props.editingBook!.title
+      priceInputRef.current!.value = props.editingBook!.price.toString()
+      imageInputRef.current!.value = props.editingBook!.image
+      authorsInputRef.current!.value = props.editingBook!.authors.join(', ')
+      descriptionInputRef.current!.value = props.editingBook!.description
+    }
+  }, [])
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -61,7 +76,7 @@ const NewBookForm = () => {
     }
 
     if (!hasError) {
-      dispatch(submitNewBook({
+      const bookData = {
         id: '',
         creator: '',
         title: enteredTitle,
@@ -69,13 +84,19 @@ const NewBookForm = () => {
         image: enteredImage,
         authors: enteredAuthors.split(', '),
         description: enteredDescription
-      }))
+      }
+
+      if (!props.editingBook) {
+        dispatch(submitNewBook(bookData))
+      } else {
+        dispatch(submitUpdatedBook({...bookData, id: props.editingBook.id}))
+      }
     }
   }
 
   return (
     <div className={classes.container}>
-      <h1>Add a New Book</h1>
+      <h1>{!!props.editingBook ? "Edit The Book" : "Add a New Book"}</h1>
       <form className={classes.form} action="#" onSubmit={submitHandler}>
         <TextField
           fullWidth
@@ -91,7 +112,8 @@ const NewBookForm = () => {
           required
           id="price"
           label="Price"
-          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+          type="number"
+          inputProps={{ step: 0.01 }}
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}

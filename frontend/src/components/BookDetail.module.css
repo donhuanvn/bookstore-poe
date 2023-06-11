@@ -37,3 +37,11 @@
   font-size: 18px;
   text-align: justify;
 }
+
+.control-panel {
+  text-align: center;
+}
+
+.control-panel button {
+  margin-right: 20px;
+}

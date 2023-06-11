@@ -47,9 +47,12 @@ function HomePage() {
     dispatch(bookActions.setSearchText(newSearchText))
   }
 
-  const selectBookForDetailHandler = (bookId: string) => {
-    dispatch(bookActions.chooseBookForShowingDetail(bookId))
-    navigate('book-detail')
+  const selectBookForDetailHandler = (id: string) => {
+    const selectedBook = shownBooks.find(b => b.id === id)
+    if (selectedBook) {
+      dispatch(bookActions.setBookToShowDetail(selectedBook))
+      navigate('book-detail')
+    }
   }
 
   return (
