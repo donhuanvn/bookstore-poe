@@ -10,7 +10,7 @@ export const fetchAllBooks = () => {
     dispatch(bookActions.enterLoadingStage())
     // await new Promise(resolve => setTimeout(resolve, 2000));
     const { data, error } = await supabase
-      .from('Books')
+      .from('books')
       .select('*')
 
     if (error || !data) { // Should toast an error
@@ -40,7 +40,7 @@ export const submitNewBook = (newBook: Book) => {
     }
 
     const { data, error } = await supabase
-      .from('Books')
+      .from('books')
       .insert([
         {
           creator: await supabase.auth.getUser(),

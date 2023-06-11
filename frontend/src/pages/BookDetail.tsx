@@ -62,7 +62,7 @@ export function BookDetailPageWithLoader() {
 
 const loadBookDetail = async (id: string) => {
   const { data, error } = await supabase
-    .from('Books')
+    .from('books')
     .select("*")
     .eq('id', id)
 

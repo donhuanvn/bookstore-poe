@@ -46,6 +46,9 @@ function RootLayout() {
         open={showBackdrop}
         onDoubleClick={backdropHandler}
       >
+        <div style={{backgroundColor: "rgb(0,0,0,0.2)" ,color: "gray", position: "absolute", bottom: "10px", left: "10px"}}>
+          Double click to turn off the backdrop
+        </div>
         <div onClick={(e) => e.stopPropagation()} onDoubleClick={(e) => e.stopPropagation()}>
           {showLoginForm && <AuthForm mode='login' />}
           {showSignupForm && <AuthForm mode='signup' />}
