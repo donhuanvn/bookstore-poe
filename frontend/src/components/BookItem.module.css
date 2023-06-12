@@ -30,3 +30,7 @@
 .container img {
   width: 150px;
 }
+
+.highlight-search-match {
+  background-color: yellow;
+}

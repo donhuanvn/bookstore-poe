@@ -18,6 +18,7 @@ type DisplayedBook = {
   title: string;
   image: string;
   price: number;
+  titleSearchMatch?: {index: number, length: number};
 }
 
 type BooksListProps = {

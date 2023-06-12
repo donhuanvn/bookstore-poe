@@ -27,7 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
       if (text !== props.searchText) { // just a double-check
         props.onSearchChange(text)
       }
-    }, 2000)
+    }, 500)
 
     return () => {
       // console.log("CLEANUP")
