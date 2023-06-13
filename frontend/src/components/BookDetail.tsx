@@ -41,7 +41,7 @@ const BookDetail: React.FC<BookDetailProps> = (props) => {
           {props.title}
         </Grid>
         <Grid className={classes['book-image']} item xs={12}>
-          <img src={props.image} alt='Book Image' />
+          <img aria-label="illustration image" src={props.image} alt='Book Image' />
         </Grid>
         {showControlPanel && controlPanel}
         <Grid className={classes.label} item xs={4}>

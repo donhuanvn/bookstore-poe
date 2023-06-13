@@ -89,7 +89,7 @@ const NewBookForm: React.FC<NewBookFormProps> = (props) => {
       if (!props.editingBook) {
         dispatch(submitNewBook(bookData))
       } else {
-        dispatch(submitUpdatedBook({...bookData, id: props.editingBook.id}))
+        dispatch(submitUpdatedBook({ ...bookData, id: props.editingBook.id }))
       }
     }
   }
@@ -97,7 +97,7 @@ const NewBookForm: React.FC<NewBookFormProps> = (props) => {
   return (
     <div className={classes.container}>
       <h1>{!!props.editingBook ? "Edit The Book" : "Add a New Book"}</h1>
-      <form className={classes.form} action="#" onSubmit={submitHandler}>
+      <form className={classes.form} action="#" onSubmit={submitHandler} data-testid={!!props.editingBook ? "edit-book form" : "new-book form"}>
         <TextField
           fullWidth
           required

@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type UiState = {
+export type UiState = {
   isNewBookFormVisible: boolean;
   isEditBookFormVisible: boolean;
   isLoginFormVisible: boolean;
   isSignUpFormVisible: boolean;
 }
 
-const initialUiState: UiState = {
+export const initialUiState: UiState = {
   isNewBookFormVisible: false,
   isEditBookFormVisible: false,
   isLoginFormVisible: false,

@@ -4,7 +4,7 @@ import type { Book } from "../types";
 import type { MatchData } from 'fast-fuzzy'
 import fuzzySearch from '../util/fuzzy-searcher'
 
-type BookState = {
+export type BookState = {
   isSubmitting: boolean;
   isLoading: boolean;
   currentPage: number;
@@ -15,7 +15,7 @@ type BookState = {
   bookForShowDetail: Book | null;
 }
 
-const initialBookSlice: BookState = {
+export const initialBookState: BookState = {
   isSubmitting: false,
   isLoading: false,
   currentPage: 1,
@@ -28,7 +28,7 @@ const initialBookSlice: BookState = {
 
 const bookSlice = createSlice({
   name: 'book',
-  initialState: initialBookSlice as BookState,
+  initialState: initialBookState as BookState,
   reducers: {
     enterSubmittingStage(state) {
       state.isSubmitting = true

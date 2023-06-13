@@ -67,7 +67,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
   }
 
   let signupForm = (
-    <form className={classes.form} action="#" onSubmit={signUpHandler}>
+    <form className={classes.form} action="#" onSubmit={signUpHandler} data-testid="sign-up form">
       <TextField
         fullWidth
         required
@@ -106,7 +106,7 @@ const AuthForm: React.FC<AuthFormProps> = (props) => {
   )
 
   let loginForm = (
-    <form className={classes.form} action="#" onSubmit={loginHandler}>
+    <form className={classes.form} action="#" onSubmit={loginHandler} data-testid="log-in form">
       <TextField
         fullWidth
         required

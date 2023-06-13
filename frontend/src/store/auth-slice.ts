@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-type AuthState = {
+export type AuthState = {
   user: undefined | string;
   isInProgress: boolean;
   error: any;
@@ -22,7 +22,7 @@ type AuthResponse = {
   user: undefined | string;
 }
 
-const initialAuthState: AuthState = {
+export const initialAuthState: AuthState = {
   user: undefined,
   isInProgress: false,
   error: null

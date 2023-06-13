@@ -27,6 +27,7 @@ function RootLayout() {
   useEffect(() => {
     const checkAndLoginAuto = async () => {
       const { data, error } = await supabase.auth.getUser()
+      // console.log("data.user.email", data!.user!.email)
       if (data && data.user && data.user.email) {
         dispatch(authActions.finishProgress({ error: null, user: data.user!.email })) /* Finish the automatically login process */
       }
@@ -48,6 +49,7 @@ function RootLayout() {
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={showBackdrop}
         onDoubleClick={backdropHandler}
+        data-testid="backdrop-for-forms"
       >
         <div style={{ backgroundColor: "rgb(0,0,0,0.2)", color: "gray", position: "absolute", bottom: "10px", left: "10px" }}>
           Double click to turn off the backdrop

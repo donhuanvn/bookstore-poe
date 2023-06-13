@@ -57,7 +57,7 @@ function HomePage() {
   }
 
   const searchHandler = (newSearchText: string) => {
-    console.log(newSearchText !== '' ? newSearchText : 'Cleared search text')
+    // console.log(newSearchText !== '' ? newSearchText : 'Cleared search text')
     dispatch(bookActions.setSearchText(newSearchText))
   }
 

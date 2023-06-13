@@ -48,7 +48,7 @@ function MainNavigation() {
       </Link>
       <nav>
         <ul>
-          {!!loggedInUser && <li><Link to="#" onClick={addNewBookHandler}>Add New Book</Link></li>}
+          {!!loggedInUser && <li><Link to="#" onClick={addNewBookHandler}>Add a New Book</Link></li>}
           {authListItem}
         </ul>
       </nav>

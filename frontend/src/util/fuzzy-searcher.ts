@@ -4,7 +4,7 @@ import type { Book } from '../types'
 let fuzzySearcher: null | Searcher<Book, { keySelector: (book: Book) => string }> = null
 
 const cacheBookDataset = (books: Book[]) => {
-  console.log("Cache a book dataset")
+  // console.log("Cache a book dataset")
   fuzzySearcher = new Searcher(
     books,
     { keySelector: book => book.title }

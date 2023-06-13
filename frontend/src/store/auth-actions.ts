@@ -3,8 +3,6 @@ import { uiActions } from "./ui-slice";
 import { AppDispatch } from ".";
 import supabase from "../supabase";
 
-supabase.getChannels()
-
 export const login = (email: string, password: string) => {
   return async (dispatch: AppDispatch) => {
     dispatch(authActions.enterProgress())

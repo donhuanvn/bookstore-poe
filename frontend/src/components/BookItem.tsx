@@ -17,7 +17,7 @@ const BookItem: React.FC<BookItemProps> = (props) => {
   }
 
   return (
-    <div className={classes.container} onClick={chooseBookHandler}>
+    <div className={classes.container} onClick={chooseBookHandler} data-testid="book-item">
       <h1>
         {!props.titleSearchMatch ? props.title :
           <Highlighter
@@ -32,7 +32,7 @@ const BookItem: React.FC<BookItemProps> = (props) => {
             textToHighlight={props.title}
           />}
       </h1>
-      <img src={props.image} alt="Book Image" />
+      <img aria-label={props.title} src={props.image} alt="Book Image" />
       <h1>${props.price}</h1>
     </div>
   )
