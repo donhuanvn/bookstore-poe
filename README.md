@@ -11,4 +11,4 @@ The demonstration hosted on Netlify could be accessed at the link above. Everyon
   - Go to the detail page by clicking on a book you want.
   - On the detail page, edit or delete that book (if it was created by you).
 
-I consider myself as just a fresh graduate in computer science from HCMUT, and now I am also in the last one-third of my IELTS course at BKEnglish and do not have a full-time job. Therefore, if any employer or HR has related positions and is interested in my project, you can ask me anything about this project via [nhuandongoc@gmail.com](mailto:nhuandongoc@gmail.com).
+I consider myself just a fresh graduate in computer science from HCMUT, and now I am also in the last month of my IELTS course at BKEnglish and do not have a full-time job. Therefore, if any employer or HR has related positions and is interested in my project, you can ask me anything about this project via [nhuandongoc@gmail.com](mailto:nhuandongoc@gmail.com).
